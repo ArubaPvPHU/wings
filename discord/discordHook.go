@@ -165,5 +165,5 @@ func GetServerByUUID(uuid string) string {
 }
 
 func CheckEnvVars() {
-	log.Println("WEBHOOK_URL in discord package: %s\n", os.Getenv("WEBHOOK_URL"))
+	fmt.Printf("WEBHOOK_URL in discord package: %s\n", os.Getenv("WEBHOOK_URL"))
 }

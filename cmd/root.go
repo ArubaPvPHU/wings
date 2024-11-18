@@ -94,6 +94,9 @@ func init() {
 func rootCmdRun(cmd *cobra.Command, _ []string) {
 	printLogo()
 
+	fmt.Println("teeeeest")
+	fmt.Println(os.Getenv("WEBHOOK_URL") + " wwwwwwwwwwwww")
+
 	discord.SendWingsStarting()
 	discord.CheckEnvVars()
 
