@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 )
 
@@ -17,9 +18,12 @@ type WebhookMessage struct {
 }
 
 const (
-	apiURL      = "https://admin.npterra.hu/api/application/union/"
-	bearerToken = "ptla_SdxLtQjF1j6losVJw7C1QDfS6LueOSfULEUZufeGU9B"
-	webhookURL  = "https://discord.com/api/webhooks/1263780637106638871/ytU7ObFrwINIBIvIgDcIqMjNTvO6eSMPEFJar9Wlau_DsSDlh3VWHmrt7iZMiBqmaD8j"
+	apiURL = "https://admin.npterra.hu/api/application/union/"
+)
+
+var (
+	bearerToken = os.Getenv("BEARER_TOKEN")
+	webhookURL  = os.Getenv("WEBHOOK_URL")
 )
 
 type ServerResponse struct {
