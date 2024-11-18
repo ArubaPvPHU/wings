@@ -163,3 +163,7 @@ func GetServerByUUID(uuid string) string {
 
 	return response.Attributes.Name
 }
+
+func CheckEnvVars() {
+	fmt.Printf("WEBHOOK_URL in discord package: %s\n", os.Getenv("WEBHOOK_URL"))
+}

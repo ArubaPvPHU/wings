@@ -95,6 +95,7 @@ func rootCmdRun(cmd *cobra.Command, _ []string) {
 	printLogo()
 
 	discord.SendWingsStarting()
+	discord.CheckEnvVars()
 
 	log.Debug("running in debug mode")
 	log.WithField("config_file", configPath).Info("loading configuration from file")
