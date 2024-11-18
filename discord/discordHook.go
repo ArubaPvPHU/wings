@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/sirupsen/logrus" // Assumed logging package
 	"io/ioutil"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -61,6 +62,7 @@ func SendStartingState(uuid string) {
 	err := SendDiscordMessage(":gear:  A(z) **"+name+"** szerver indítása megkezdődött... ", name)
 
 	if err != nil {
+		log.Println("SendStartingState: Error occured; " + err.Error())
 	}
 }
 
@@ -68,6 +70,7 @@ func SendWingsStarting() {
 	err := SendDiscordMessage(":gear:  A **Wings** indítása megkezdődött... ", "Wings")
 
 	if err != nil {
+		log.Println("SendWingsStarting: Error occured; " + err.Error())
 	}
 }
 
@@ -75,6 +78,7 @@ func SendWingsStarted() {
 	err := SendDiscordMessage(":green_circle: A **Wings** sikeresen elindult!", "Wings")
 
 	if err != nil {
+		log.Println("SendWingsStarted: Error occured; " + err.Error())
 	}
 }
 
@@ -84,6 +88,7 @@ func SendStoppingState(uuid string) {
 	err := SendDiscordMessage(":gear:  A(z) **"+name+"** szerver leállítása megkezdődött... ", name)
 
 	if err != nil {
+		log.Println("SendStoppingState: Error occured; " + err.Error())
 	}
 }
 
@@ -93,6 +98,7 @@ func SendStartedState(uuid string) {
 	err := SendDiscordMessage(":green_circle: A(z) **"+name+"** szerver sikeresen elindult!", name)
 
 	if err != nil {
+		log.Println("SendStartedState: Error occured; " + err.Error())
 	}
 }
 
@@ -102,6 +108,7 @@ func SendStoppedState(uuid string) {
 	err := SendDiscordMessage(":octagonal_sign: A(z) **"+name+"** szerver sikeresen leállt!", name)
 
 	if err != nil {
+		log.Println("SendStoppedState: Error occured; " + err.Error())
 	}
 }
 
