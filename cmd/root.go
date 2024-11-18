@@ -35,6 +35,8 @@ import (
 	"github.com/pterodactyl/wings/server"
 	"github.com/pterodactyl/wings/sftp"
 	"github.com/pterodactyl/wings/system"
+
+	"github.com/pterodactyl/wings/discord"
 )
 
 var (
@@ -91,6 +93,9 @@ func init() {
 
 func rootCmdRun(cmd *cobra.Command, _ []string) {
 	printLogo()
+
+	discord.SendWingsStarting()
+
 	log.Debug("running in debug mode")
 	log.WithField("config_file", configPath).Info("loading configuration from file")
 
@@ -322,6 +327,8 @@ func rootCmdRun(cmd *cobra.Command, _ []string) {
 		Handler:   router.Configure(manager, pclient),
 		TLSConfig: config.DefaultTLSConfig,
 	}
+
+	discord.SendWingsStarted()
 
 	profile, _ := cmd.Flags().GetBool("pprof")
 	if profile {

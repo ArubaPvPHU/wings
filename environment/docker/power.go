@@ -2,6 +2,7 @@ package docker
 
 import (
 	"context"
+	"github.com/pterodactyl/wings/discord"
 	"os"
 	"strings"
 	"time"
@@ -60,7 +61,9 @@ func (e *Environment) Start(ctx context.Context) error {
 			// we don't want to do at this point since it'll just immediately try to do the
 			// exact same action that lead to it crashing in the first place...
 			e.SetState(environment.ProcessStoppingState)
+			discord.SendStoppingState(e.Id)
 			e.SetState(environment.ProcessOfflineState)
+			discord.SendStoppedState(e.Id)
 		}
 	}()
 
@@ -92,6 +95,8 @@ func (e *Environment) Start(ctx context.Context) error {
 	}
 
 	e.SetState(environment.ProcessStartingState)
+
+	discord.SendStartingState(e.Id)
 
 	// Set this to true for now, we will set it to false once we reach the
 	// end of this chain.
@@ -145,6 +150,7 @@ func (e *Environment) Stop(ctx context.Context) error {
 	// it is and continue through to the stop handling for the process.
 	if e.st.Load() != environment.ProcessOfflineState {
 		e.SetState(environment.ProcessStoppingState)
+		discord.SendStoppingState(e.Id)
 	}
 
 	// Handle signal based actions
@@ -195,6 +201,7 @@ func (e *Environment) Stop(ctx context.Context) error {
 		if client.IsErrNotFound(err) {
 			e.SetStream(nil)
 			e.SetState(environment.ProcessOfflineState)
+			discord.SendStoppedState(e.Id)
 			return nil
 		}
 		return errors.Wrap(err, "environment/docker: cannot stop container")
@@ -291,7 +298,9 @@ func (e *Environment) SignalContainer(ctx context.Context, signal string) error 
 		// first so crash detection is not triggered.
 		if e.st.Load() != environment.ProcessOfflineState {
 			e.SetState(environment.ProcessStoppingState)
+			discord.SendStoppingState(e.Id)
 			e.SetState(environment.ProcessOfflineState)
+			discord.SendStoppedState(e.Id)
 		}
 
 		return nil
@@ -299,6 +308,7 @@ func (e *Environment) SignalContainer(ctx context.Context, signal string) error 
 
 	// We set it to stopping than offline to prevent crash detection from being triggered.
 	e.SetState(environment.ProcessStoppingState)
+	discord.SendStoppingState(e.Id)
 	if err := e.client.ContainerKill(ctx, e.Id, signal); err != nil && !client.IsErrNotFound(err) {
 		return errors.WithStack(err)
 	}

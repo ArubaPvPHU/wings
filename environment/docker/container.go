@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"context"
 	"fmt"
+	"github.com/pterodactyl/wings/discord"
 	"io"
 	"strconv"
 	"strings"
@@ -72,6 +73,7 @@ func (e *Environment) Attach(ctx context.Context) error {
 		defer e.stream.Close()
 		defer func() {
 			e.SetState(environment.ProcessOfflineState)
+			discord.SendStoppedState(e.Id)
 			e.SetStream(nil)
 		}()
 
@@ -269,6 +271,7 @@ func (e *Environment) Create() error {
 func (e *Environment) Destroy() error {
 	// We set it to stopping than offline to prevent crash detection from being triggered.
 	e.SetState(environment.ProcessStoppingState)
+	discord.SendStoppingState(e.Id)
 
 	err := e.client.ContainerRemove(context.Background(), e.Id, container.RemoveOptions{
 		RemoveVolumes: true,
@@ -277,6 +280,7 @@ func (e *Environment) Destroy() error {
 	})
 
 	e.SetState(environment.ProcessOfflineState)
+	discord.SendStoppedState(e.Id)
 
 	// Don't trigger a destroy failure if we try to delete a container that does not
 	// exist on the system. We're just a step ahead of ourselves in that case.
@@ -305,6 +309,7 @@ func (e *Environment) SendCommand(c string) error {
 	// stop and Wings will think it has crashed and attempt to restart it.
 	if e.meta.Stop.Type == "command" && c == e.meta.Stop.Value {
 		e.SetState(environment.ProcessStoppingState)
+		discord.SendStoppingState(e.Id)
 	}
 
 	_, err := e.stream.Conn.Write([]byte(c + "\n"))

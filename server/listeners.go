@@ -2,6 +2,7 @@ package server
 
 import (
 	"bytes"
+	"github.com/pterodactyl/wings/discord"
 	"regexp"
 	"strconv"
 	"sync"
@@ -180,6 +181,9 @@ func (s *Server) onConsoleOutput(data []byte) {
 			// set the server to that state. Only do this if the server is not currently stopped
 			// or stopping.
 			s.Environment.SetState(environment.ProcessRunningState)
+
+			discord.SendStartedState(s.cfg.Uuid)
+
 			break
 		}
 	}
@@ -192,6 +196,8 @@ func (s *Server) onConsoleOutput(data []byte) {
 
 		if stop.Type == remote.ProcessStopCommand && bytes.Equal(v, []byte(stop.Value)) {
 			s.Environment.SetState(environment.ProcessOfflineState)
+
+			discord.SendStoppedState(s.cfg.Uuid)
 		}
 	}
 }
