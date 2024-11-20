@@ -271,7 +271,7 @@ func (e *Environment) Create() error {
 func (e *Environment) Destroy() error {
 	// We set it to stopping than offline to prevent crash detection from being triggered.
 	e.SetState(environment.ProcessStoppingState)
-	//discord.SendStoppingState(e.Id)
+	discord.SendStoppingState(e.Id)
 
 	err := e.client.ContainerRemove(context.Background(), e.Id, container.RemoveOptions{
 		RemoveVolumes: true,
