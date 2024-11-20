@@ -121,6 +121,8 @@ func GetServerByUUID(uuid string) string {
 	apiEndpoint := apiURL + uuid
 	logrus.WithField("path", apiEndpoint).Debug("Sending GET request")
 
+	fmt.Printf("DEBUG: discordHook.go->GetServerByUUId->apiEndpoint Value: " + apiEndpoint)
+
 	req, err := http.NewRequest("GET", apiEndpoint, nil)
 	if err != nil {
 		logrus.WithField("error", err.Error()).Error("Failed to create request")
