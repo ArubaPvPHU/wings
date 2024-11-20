@@ -271,7 +271,7 @@ func (e *Environment) Create() error {
 func (e *Environment) Destroy() error {
 	// We set it to stopping than offline to prevent crash detection from being triggered.
 	e.SetState(environment.ProcessStoppingState)
-	fmt.Printf("Stopping Test 1")
+	fmt.Println("Stopping Test 1")
 	discord.SendStoppingState(e.Id)
 
 	err := e.client.ContainerRemove(context.Background(), e.Id, container.RemoveOptions{
@@ -311,7 +311,7 @@ func (e *Environment) SendCommand(c string) error {
 	if e.meta.Stop.Type == "command" && c == e.meta.Stop.Value {
 		e.SetState(environment.ProcessStoppingState)
 		discord.SendStoppingState(e.Id)
-		fmt.Printf("Stopping Test 2")
+		fmt.Println("Stopping Test 2")
 	}
 
 	_, err := e.stream.Conn.Write([]byte(c + "\n"))
