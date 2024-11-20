@@ -2,7 +2,6 @@ package docker
 
 import (
 	"context"
-	"fmt"
 	"github.com/pterodactyl/wings/discord"
 	"os"
 	"strings"
@@ -63,7 +62,6 @@ func (e *Environment) Start(ctx context.Context) error {
 			// exact same action that lead to it crashing in the first place...
 			e.SetState(environment.ProcessStoppingState)
 			discord.SendStoppingState(e.Id)
-			fmt.Println("Stopping Test 5")
 			e.SetState(environment.ProcessOfflineState)
 			discord.SendStoppedState(e.Id)
 		}
@@ -153,7 +151,6 @@ func (e *Environment) Stop(ctx context.Context) error {
 	if e.st.Load() != environment.ProcessOfflineState {
 		e.SetState(environment.ProcessStoppingState)
 		discord.SendStoppingState(e.Id)
-		fmt.Println("Stopping Test 6")
 	}
 
 	// Handle signal based actions
@@ -302,7 +299,6 @@ func (e *Environment) SignalContainer(ctx context.Context, signal string) error 
 		if e.st.Load() != environment.ProcessOfflineState {
 			e.SetState(environment.ProcessStoppingState)
 			discord.SendStoppingState(e.Id)
-			fmt.Println("Stopping Test 3")
 			e.SetState(environment.ProcessOfflineState)
 			discord.SendStoppedState(e.Id)
 		}
@@ -313,7 +309,6 @@ func (e *Environment) SignalContainer(ctx context.Context, signal string) error 
 	// We set it to stopping than offline to prevent crash detection from being triggered.
 	e.SetState(environment.ProcessStoppingState)
 	discord.SendStoppingState(e.Id)
-	fmt.Println("Stopping Test 4")
 	if err := e.client.ContainerKill(ctx, e.Id, signal); err != nil && !client.IsErrNotFound(err) {
 		return errors.WithStack(err)
 	}
