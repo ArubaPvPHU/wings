@@ -309,7 +309,6 @@ func (e *Environment) SendCommand(c string) error {
 	// stop and Wings will think it has crashed and attempt to restart it.
 	if e.meta.Stop.Type == "command" && c == e.meta.Stop.Value {
 		e.SetState(environment.ProcessStoppingState)
-		//discord.SendStoppingState(e.Id)
 	}
 
 	_, err := e.stream.Conn.Write([]byte(c + "\n"))

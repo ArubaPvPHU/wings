@@ -61,7 +61,6 @@ func (e *Environment) Start(ctx context.Context) error {
 			// we don't want to do at this point since it'll just immediately try to do the
 			// exact same action that lead to it crashing in the first place...
 			e.SetState(environment.ProcessStoppingState)
-			//discord.SendStoppingState(e.Id)
 			e.SetState(environment.ProcessOfflineState)
 			discord.SendStoppedState(e.Id)
 		}
@@ -150,7 +149,6 @@ func (e *Environment) Stop(ctx context.Context) error {
 	// it is and continue through to the stop handling for the process.
 	if e.st.Load() != environment.ProcessOfflineState {
 		e.SetState(environment.ProcessStoppingState)
-		//discord.SendStoppingState(e.Id)
 	}
 
 	// Handle signal based actions
@@ -298,7 +296,6 @@ func (e *Environment) SignalContainer(ctx context.Context, signal string) error 
 		// first so crash detection is not triggered.
 		if e.st.Load() != environment.ProcessOfflineState {
 			e.SetState(environment.ProcessStoppingState)
-			//discord.SendStoppingState(e.Id)
 			e.SetState(environment.ProcessOfflineState)
 			discord.SendStoppedState(e.Id)
 		}
@@ -308,7 +305,6 @@ func (e *Environment) SignalContainer(ctx context.Context, signal string) error 
 
 	// We set it to stopping than offline to prevent crash detection from being triggered.
 	e.SetState(environment.ProcessStoppingState)
-	//discord.SendStoppingState(e.Id)
 	if err := e.client.ContainerKill(ctx, e.Id, signal); err != nil && !client.IsErrNotFound(err) {
 		return errors.WithStack(err)
 	}
