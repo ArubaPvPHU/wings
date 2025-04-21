@@ -299,9 +299,8 @@ func (s *Server) OnStateChange() {
 	// Emit the event to any listeners that are currently registered.
 	if prevState != s.Environment.State() {
 		s.Log().WithField("status", st).Debug("saw server status change event")
-		s.Events().Publish(StatusEvent, st)
-
 		s.Log().WithField("status", st).Debug("VÁLTOZÁS TÖRTÉNT!")
+		s.Events().Publish(StatusEvent, st)
 	}
 
 	// Reset the resource usage to 0 when the process fully stops so that all the UI
