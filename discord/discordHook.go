@@ -19,7 +19,7 @@ type WebhookMessage struct {
 
 const (
 	apiURL = "https://admin.npterra.hu/api/application/servers/union/"
-)
+) //
 
 var (
 	bearerToken = os.Getenv("BEARER_TOKEN")
