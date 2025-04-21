@@ -300,6 +300,8 @@ func (s *Server) OnStateChange() {
 	if prevState != s.Environment.State() {
 		s.Log().WithField("status", st).Debug("saw server status change event")
 		s.Events().Publish(StatusEvent, st)
+
+		s.Log().WithField("status", st).Debug("VÁLTOZÁS TÖRTÉNT!")
 	}
 
 	// Reset the resource usage to 0 when the process fully stops so that all the UI
