@@ -299,7 +299,7 @@ func (s *Server) OnStateChange() {
 	// Emit the event to any listeners that are currently registered.
 	if prevState != s.Environment.State() {
 		s.Log().WithField("status", st).Debug("saw server status change event")
-		s.Log().WithField("status", st).Debug("VÁLTOZÁS TÖRTÉNT!")
+		fmt.Println("VÁLTOZÁS TÖRTÉNT; " + st)
 		s.Events().Publish(StatusEvent, st)
 	}
 
