@@ -18,7 +18,7 @@ type WebhookMessage struct {
 }
 
 const (
-	apiURL = "https://admin.npterra.hu/api/application/union/"
+	apiURL = "https://admin.npterra.hu/api/application/servers/union/"
 )
 
 var (
